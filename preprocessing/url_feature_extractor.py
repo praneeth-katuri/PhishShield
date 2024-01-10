@@ -15,3 +15,13 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
 
         features_list = [self.process_url(url) for url in X]
         return pd.DataFrame(features_list)
+
+    """1. UsingIP : {-1,1}"""
+
+    def using_ip(self, url):
+        try:
+            domain = urlparse(url).netloc
+            ipaddress.ip_address(domain)
+            return -1
+        except ValueError:
+            return 1
