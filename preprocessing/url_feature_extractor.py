@@ -25,3 +25,14 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return -1
         except ValueError:
             return 1
+
+    """2. LongURL: {-1, 0, 1}"""
+
+    def long_url(self, url):
+        url_length = len(url)
+        if url_length > 100:
+            return -1
+        elif url_length >= 50:
+            return 0
+        else:
+            return 1
