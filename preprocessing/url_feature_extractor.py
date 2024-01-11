@@ -114,3 +114,9 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             "link.zip.net",
         ]
         return -1 if any(domain in url for domain in shortening_domains) else 1
+
+    """4. Symbol@: {-1,1}"""
+
+    def symbol_at(self, url):
+        parsed_url = urlparse(url)
+        return -1 if "@" in parsed_url else 1
