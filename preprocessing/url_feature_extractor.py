@@ -120,3 +120,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     def symbol_at(self, url):
         parsed_url = urlparse(url)
         return -1 if "@" in parsed_url else 1
+
+    def double_slash_redirecting(self, url):
+        parsed_url = urlparse(url)
+        return -1 if "//" in parsed_url else 1
