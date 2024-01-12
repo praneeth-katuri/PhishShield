@@ -1,7 +1,6 @@
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
-
 class FeatureExtractor(BaseEstimator, TransformerMixin):
     def __init__(self):
         pass
@@ -17,7 +16,6 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
         return pd.DataFrame(features_list)
 
     """1. UsingIP : {-1,1}"""
-
     def using_ip(self, url):
         try:
             domain = urlparse(url).netloc
@@ -27,7 +25,6 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1
 
     """2. LongURL: {-1, 0, 1}"""
-
     def long_url(self, url):
         url_length = len(url)
         if url_length > 100:
@@ -38,7 +35,6 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1
 
     """3. ShortURL: {-1, 1}"""
-
     def short_url(self, url):
         shortening_domains = [
             "bit.ly",
@@ -116,11 +112,16 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
         return -1 if any(domain in url for domain in shortening_domains) else 1
 
     """4. Symbol@: {-1,1}"""
-
     def symbol_at(self, url):
         parsed_url = urlparse(url)
         return -1 if "@" in parsed_url else 1
 
+    """5. Redirecting//: {-1, 1}"""
     def double_slash_redirecting(self, url):
         parsed_url = urlparse(url)
         return -1 if "//" in parsed_url else 1
+
+    '''6. PrefixSuffix-: {-1,1}'''
+    def prefix_suffix(self, url):
+        domain = urlparse(url).netloc.split("/")[0].split('?')[0].split('#')[0]
+        return -1 if '-' in domain else 1
