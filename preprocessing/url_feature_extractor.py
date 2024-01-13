@@ -148,3 +148,15 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if num_subdomains <= 1 else 1 if num_subdomains == 2 else -1
         except:
             return -1
+        
+        '''8.HTTPS: {-1, 0, 1}'''
+    def http_s(self, url, timeout=2):
+        if url.startswith("https://"):
+            return 1
+        else:
+            try:
+                response = requests.head("https://" + url, timeout=timeout)
+                return 1 if response.status_code == 200 else -1
+            except requests.RequestException:
+                return -1
+
