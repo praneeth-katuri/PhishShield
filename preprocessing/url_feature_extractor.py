@@ -160,3 +160,13 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             except requests.RequestException:
                 return -1
 
+    '''9. DomainRegLen: {-1,1}'''
+    def domain_reg_len(self, url):
+        try:
+            domain = urlparse(url).netloc.split("/")[0]
+            domain_info = whois.whois(domain)
+            creation_date = min(domain_info.creation_date) if isinstance(domain_info.creation_date, list) else domain_info.creation_date
+            registration_length = (datetime.now() - creation_date).days / 30
+            return 1 if registration_length > 12 else -1
+        except Exception:
+            return -1
