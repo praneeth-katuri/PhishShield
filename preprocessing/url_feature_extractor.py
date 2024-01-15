@@ -170,3 +170,25 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if registration_length > 12 else -1
         except Exception:
             return -1
+
+    '''10.Favicon: {-1, 1}'''
+    def favicon(self, url):
+        try:
+            response = requests.get(url, timeout=2)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.content, 'html.parser')
+            favicon_link = soup.find('link', rel='icon') or soup.find('link', rel='shortcut icon')
+            if favicon_link:
+                favicon_url = favicon_link.get('href')
+                # Check if favicon URL is a relative path
+                if not urlparse(favicon_url).netloc:
+                    return 1  # Return 1 if favicon URL is a relative path
+                else:
+                    # Compare favicon domain with page domain
+                    favicon_domain = urlparse(favicon_url).netloc
+                    page_domain = urlparse(url).netloc
+                    if favicon_domain != page_domain:
+                        return -1  # Return -1 if favicon domain doesn't match page domain
+            return -1  # Return -1 if no favicon found or favicon URL is not a relative path
+        except requests.exceptions.RequestException:
+            return -1
