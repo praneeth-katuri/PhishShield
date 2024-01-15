@@ -192,3 +192,21 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return -1  # Return -1 if no favicon found or favicon URL is not a relative path
         except requests.exceptions.RequestException:
             return -1
+
+    '''11.NonStdPort: {-1, 1}'''
+    def non_std_port(self, url):
+        standard_ports = {80, 443}
+        parsed_url = urlparse(url)
+
+        # Check if the URL has a port specified
+        if parsed_url.port is not None:
+            return 1 if parsed_url.port in standard_ports else -1
+        else:
+            # If no port is specified, check if the scheme is HTTP or HTTPS
+            if parsed_url.scheme == 'https':
+                return 1 if 80 in standard_ports else -1
+        # elif parsed_url.scheme == 'https':
+            #    return 1 if 443 in standard_ports else -1
+            else:
+                # If the scheme is not HTTP or HTTPS, return -1
+                return -1
