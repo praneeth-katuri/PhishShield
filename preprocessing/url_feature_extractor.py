@@ -210,3 +210,25 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             else:
                 # If the scheme is not HTTP or HTTPS, return -1
                 return -1
+            
+    '''12.HTTPSDomainURL: {-1,1}'''
+    def is_https_in_domain(self, url):
+        return -1 if 'https' in urlparse(url).netloc else 1
+
+    '''13.RequestURL: {-1,1}'''
+    def request_urls(self, url):
+        try:
+            response = requests.get(url, timeout=2)
+            if response.status_code != 200:
+                return -1
+            soup = BeautifulSoup(response.content, 'html.parser')
+            success, total_resources = 0, 0
+            for tag in ['img', 'audio', 'embed', 'iframe']:
+                for resource in soup.find_all(tag, src=True):
+                    total_resources += 1
+                    dots = [x.start(0) for x in re.finditer('\.', resource['src'])]
+                    if url in resource['src'] or len(dots) == 1:
+                        success += 1
+            return -1 if total_resources == 0 else 1 if (success / total_resources) * 100 >= 42.0 else -1
+        except Exception:
+            return -1
