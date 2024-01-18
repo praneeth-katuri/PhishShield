@@ -232,3 +232,18 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return -1 if total_resources == 0 else 1 if (success / total_resources) * 100 >= 42.0 else -1
         except Exception:
             return -1
+        
+    '''14.AnchorURL: {-1,0,1}'''
+    def anchor_urls(self, url):
+        try:
+            response = requests.get(url, timeout=2)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            unsafe, i = 0, 0
+            for a in soup.find_all('a', href=True):
+                if "#" in a['href'] or "javascript" in a['href'].lower() or "mailto" in a['href'].lower() or not (url in a['href'] or url.split('/')[2] in a['href']):
+                    unsafe += 1
+                i += 1
+            percentage = unsafe / float(i) * 100
+            return 1 if percentage < 31.0 else 0 if 31.0 <= percentage < 67.0 else -1
+        except Exception:
+            return -1
