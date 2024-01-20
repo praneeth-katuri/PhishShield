@@ -308,3 +308,14 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return -1 if re.findall(r"(mail\(\)|mailto:)", str(soup)) else 1
         except Exception:
             return -1
+
+    '''18.AbnormalURL: {-1, 1}'''
+    def abnormal_url(self, url):
+        try:
+            response = requests.get(url, timeout=2)
+            response_text = response.text
+            domain = urlparse(url).netloc
+            whois_response = str(whois.whois(domain))
+            return 1 if response_text == whois_response else -1
+        except Exception:
+            return -1
