@@ -299,3 +299,12 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
                 return 1
         except Exception:
             return -1
+
+    '''17.InfoEmail: {-1, 1}'''
+    def info_email(self, url):
+        try:
+            response = requests.get(url, timeout=2)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            return -1 if re.findall(r"(mail\(\)|mailto:)", str(soup)) else 1
+        except Exception:
+            return -1
