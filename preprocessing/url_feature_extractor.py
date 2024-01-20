@@ -282,3 +282,20 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
 
         except Exception:
             return -1
+        
+    '''16.ServerFormHandler: {-1, 0, 1}'''
+    def server_form_handler(self, url):
+        try:
+            response = requests.get(url, timeout=2)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            forms = soup.find_all('form', action=True)
+            if len(forms) == 0:
+                return 1
+            else:
+                for form in forms:
+                    action = form['action']
+                    if action == "" or action == "about:blank" or (url not in action and urlparse(url).netloc not in action):
+                        return 0
+                return 1
+        except Exception:
+            return -1
