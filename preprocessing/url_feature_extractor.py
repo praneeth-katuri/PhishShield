@@ -247,3 +247,38 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if percentage < 31.0 else 0 if 31.0 <= percentage < 67.0 else -1
         except Exception:
             return -1
+
+    '''15.LinksInScriptTags: {-1, 0, 1}'''
+    def links_in_script_tags(self, url):
+        try:
+            i, success = 0, 0
+
+            # Make an HTTP request to the URL
+            response = requests.get(url, timeout=2)
+            soup = BeautifulSoup(response.content, 'html.parser')
+
+            for link in soup.find_all('link', href=True):
+                dots = [x.start(0) for x in re.finditer('\.', link['href'])]
+                if url in link['href'] or self.domain in link['href'] or len(dots) == 1:
+                    success += 1
+                i += 1
+
+            for script in soup.find_all('script', src=True):
+                dots = [x.start(0) for x in re.finditer('\.', script['src'])]
+                if url in script['src'] or self.domain in script['src'] or len(dots) == 1:
+                    success += 1
+                i += 1
+
+            # Calculate the percentage of successful links
+            percentage = (success / float(i)) * 100
+
+            # Return -1, 0, or 1 based on the percentage
+            if percentage < 17.0:
+                return 1
+            elif 17.0 <= percentage < 81.0:
+                return 0
+            else:
+                return -1
+
+        except Exception:
+            return -1
