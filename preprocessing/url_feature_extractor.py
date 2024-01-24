@@ -337,3 +337,21 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
         except Exception as e:
             print("Error:", e)
             return -1
+
+    '''20.StatusBarCust: {-1, 1}'''
+    def status_bar_cust(self, url):
+        try:
+            response = requests.get(url, timeout=2)
+            html_content = response.text
+            return 1 if re.findall("<script>.+onmouseover.+</script>", html_content) or re.findall("<style>.+statusbar.+</style>", html_content) or re.findall("<a .+onmouseover.+title=.+>", html_content) or re.findall("addEventListener\('mouseover', .+setStatusBar", html_content) else -1
+        except Exception:
+            return -1
+        
+    '''21.DisableRightClick: {-1, 1}'''
+    def disable_right_click(self, url):
+        try:
+            response = requests.get(url, timeout=2)
+            html_content = response.text
+            return 1 if re.findall(r"event\.button\s*===\s*2", html_content) else -1
+        except Exception:
+            return -1
