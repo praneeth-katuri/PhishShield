@@ -319,3 +319,21 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if response_text == whois_response else -1
         except Exception:
             return -1
+        
+    '''19.WebsiteForwarding: {0, 1}'''
+    def website_forwarding(self, url):
+        try:
+            max_redirects = 4
+            redirects_count = 0
+            while True:
+                response = requests.head(url, allow_redirects=True, timeout=1)
+                if response.status_code in [301, 302]:
+                    redirects_count += 1
+                    if redirects_count > max_redirects:
+                        return -1
+                    url = response.headers['Location']
+                else:
+                    return redirects_count
+        except Exception as e:
+            print("Error:", e)
+            return -1
