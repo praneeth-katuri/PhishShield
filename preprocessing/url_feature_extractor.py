@@ -355,3 +355,32 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if re.findall(r"event\.button\s*===\s*2", html_content) else -1
         except Exception:
             return -1
+
+    '''22.UsingPopupWindow: {-1, 1}'''
+    def using_popup_window(self, url):
+        try:
+            response = requests.get(url, timeout=2)
+            response.raise_for_status()
+            html_content = response.text
+            return 1 if re.findall(r"window\.open\(|alert\(", html_content) else -1
+        except Exception:
+            return -1
+
+    '''23.IframeRedirection: {-1, 1}'''
+    def iframe_redirect(self, url):
+        try:
+            # Send a GET request to the URL and fetch the HTML content
+            response = requests.get(url, timeout=2)
+            response.raise_for_status()  # Raise an exception for non-200 status codes
+
+            # Extract the HTML content from the response
+            html_content = response.text
+
+            # Use regular expressions to search for iframe tags with frameBorder attribute set to 0
+            if re.search(r'<iframe\s[^>]*frameborder\s*=\s*["\']?0["\']?[^>]*>', html_content, re.IGNORECASE):
+                return 1  # Phishing website detected
+            else:
+                return 1  # No phishing detected
+        except Exception as e:
+            print("An error occurred:", e)
+            return -1  # Error occurred, unable to determine
