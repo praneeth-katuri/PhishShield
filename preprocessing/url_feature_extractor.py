@@ -437,3 +437,16 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if url in search_results else -1
         except Exception:
             return -1
+
+
+    '''29.LinksPointingToPage: {-1, 0, 1}'''
+    def links_pointing_to_page(self, url):
+        try:
+            response = requests.get(url, timeout=2)
+            if response.status_code == 200:
+                number_of_links = len(re.findall(r"<a href=", response.text))
+                return -1 if number_of_links == 0 else 1 if number_of_links > 3 else 0
+            else:
+                return -1
+        except Exception:
+            return -1
