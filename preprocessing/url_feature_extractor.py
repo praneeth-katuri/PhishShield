@@ -429,3 +429,11 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if rank is not None and rank < 100000 else 0 if rank is not None else -1
         except Exception:
             return -1
+        
+    '''28.GoogleIndex: {-1, 1}'''
+    def google_index(self, url):
+        try:
+            search_results = list(search(url, num=5, stop=5, pause=2))
+            return 1 if url in search_results else -1
+        except Exception:
+            return -1
