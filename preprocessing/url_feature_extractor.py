@@ -384,3 +384,23 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
         except Exception as e:
             print("An error occurred:", e)
             return -1  # Error occurred, unable to determine
+
+    '''24.AgeofDomain: {-1, 1}'''
+    def age_of_domain(self, url):
+        try:
+            domain = urlparse(url).netloc
+            domain_info = whois.whois(domain)
+            creation_date = min(domain_info.creation_date) if isinstance(domain_info.creation_date, list) else domain_info.creation_date
+            age_in_months = (datetime.now().year - creation_date.year) * 12 + (datetime.now().month - creation_date.month)
+            return 1 if age_in_months >= 6 else -1
+        except Exception:
+            return -1
+
+    '''25.DNSRecording: {-1, 1}'''
+    def dns_record(self, url):
+        try:
+            domain = urlparse(url).netloc
+            answers = dns.resolver.resolve(domain, 'A')
+            return 1 if answers else -1
+        except Exception:
+            return -1
