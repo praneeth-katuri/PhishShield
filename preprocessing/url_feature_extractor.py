@@ -1,5 +1,16 @@
 import pandas as pd
+import re
+import ipaddress
+import requests
+from urllib.parse import urlparse
+from bs4 import BeautifulSoup
+import whois
+from datetime import datetime
+import dns.resolver
+from googlesearch import search
+import csv
 from sklearn.base import BaseEstimator, TransformerMixin
+
 
 class FeatureExtractor(BaseEstimator, TransformerMixin):
     def __init__(self):
@@ -450,3 +461,51 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
                 return -1
         except Exception:
             return -1
+
+    '''30.StatsReport: {-1,1}'''
+    def stats_report(self, url):
+        try:
+            response = requests.get('https://openphish.com/feed.txt', timeout=2)
+            response.raise_for_status()
+            for line in response.text.split('\n'):
+                line = line.strip()
+                if line == url:
+                    return -1
+            return 1
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return 1
+
+    def process_url(self, url):
+        return {
+            "UsingIP": self.using_ip(url),
+            "LongURL": self.long_url(url),
+            "ShortURL": self.short_url(url),
+            "Symbol@": self.symbol_at(url),
+            "Redirecting//": self.double_slash_redirecting(url),
+            "PrefixSuffix-": self.prefix_suffix(url),
+            "SubDomains": self.sub_domains(url),
+            "HTTPS": self.http_s(url),
+            "DomainRegLen": self.domain_reg_len(url),
+            "Favicon": self.favicon(url),
+            "NonStdPort": self.non_std_port(url),
+            "HTTPSDomainURL": self.is_https_in_domain(url),
+            "RequestURL": self.request_urls(url),
+            "AnchorURL": self.anchor_urls(url),
+            "LinksInScriptTags": self.links_in_script_tags(url),
+            "ServerFormHandler": self.server_form_handler(url),
+            "InfoEmail": self.info_email(url),
+            "AbnormalURL": self.abnormal_url(url),
+            "WebsiteForwarding": self.website_forwarding(url),
+            "StatusBarCust": self.status_bar_cust(url),
+            "DisableRightClick": self.disable_right_click(url),
+            "UsingPopupWindow": self.using_popup_window(url),
+            "IframeRedirection": self.iframe_redirect(url),
+            "AgeofDomain": self.age_of_domain(url),
+            "DNSRecording": self.dns_record(url),
+            "WebsiteTraffic": self.website_traffic(url),
+            "PageRank": self.page_rank(url),
+            "GoogleIndex": self.google_index(url),
+            "LinksPointingToPage": self.links_pointing_to_page(url),
+            "StatsReport": self.stats_report(url)
+        }
