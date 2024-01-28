@@ -11,22 +11,22 @@ from googlesearch import search
 import csv
 from sklearn.base import BaseEstimator, TransformerMixin
 
-
 class FeatureExtractor(BaseEstimator, TransformerMixin):
     def __init__(self):
         pass
-
+    
     def fit(self, X, y=None):
         return self
-
+    
     def transform(self, X):
         if not isinstance(X, list):
             X = [X]
 
+
         features_list = [self.process_url(url) for url in X]
         return pd.DataFrame(features_list)
-
-    """1. UsingIP : {-1,1}"""
+    
+    '''1. UsingIP : {-1,1}'''
     def using_ip(self, url):
         try:
             domain = urlparse(url).netloc
@@ -35,7 +35,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
         except ValueError:
             return 1
 
-    """2. LongURL: {-1, 0, 1}"""
+    '''2. LongURL: {-1, 0, 1}'''
     def long_url(self, url):
         url_length = len(url)
         if url_length > 100:
@@ -45,89 +45,27 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
         else:
             return 1
 
-    """3. ShortURL: {-1, 1}"""
+    '''3. ShortURL: {-1, 1}'''
     def short_url(self, url):
         shortening_domains = [
-            "bit.ly",
-            "goo.gl",
-            "shorte.st",
-            "go2l.ink",
-            "x.co",
-            "ow.ly",
-            "t.co",
-            "tinyurl",
-            "tr.im",
-            "is.gd",
-            "cli.gs",
-            "yfrog.com",
-            "migre.me",
-            "ff.im",
-            "tiny.cc",
-            "url4.eu",
-            "twit.ac",
-            "su.pr",
-            "twurl.nl",
-            "snipurl.com",
-            "short.to",
-            "BudURL.com",
-            "ping.fm",
-            "post.ly",
-            "Just.as",
-            "bkite.com",
-            "snipr.com",
-            "fic.kr",
-            "loopt.us",
-            "doiop.com",
-            "short.ie",
-            "kl.am",
-            "wp.me",
-            "rubyurl.com",
-            "om.ly",
-            "to.ly",
-            "bit.do",
-            "t.co",
-            "lnkd.in",
-            "db.tt",
-            "qr.ae",
-            "adf.ly",
-            "goo.gl",
-            "bitly.com",
-            "cur.lv",
-            "tinyurl.com",
-            "ow.ly",
-            "bit.ly",
-            "ity.im",
-            "q.gs",
-            "is.gd",
-            "po.st",
-            "bc.vc",
-            "twitthis.com",
-            "u.to",
-            "j.mp",
-            "buzurl.com",
-            "cutt.us",
-            "u.bb",
-            "yourls.org",
-            "x.co",
-            "prettylinkpro.com",
-            "scrnch.me",
-            "filoops.info",
-            "vzturl.com",
-            "qr.net",
-            "1url.com",
-            "tweez.me",
-            "v.gd",
-            "tr.im",
-            "link.zip.net",
+            'bit.ly', 'goo.gl', 'shorte.st', 'go2l.ink', 'x.co', 'ow.ly', 't.co', 'tinyurl', 'tr.im',
+            'is.gd', 'cli.gs', 'yfrog.com', 'migre.me', 'ff.im', 'tiny.cc', 'url4.eu', 'twit.ac',
+            'su.pr', 'twurl.nl', 'snipurl.com', 'short.to', 'BudURL.com', 'ping.fm', 'post.ly', 'Just.as',
+            'bkite.com', 'snipr.com', 'fic.kr', 'loopt.us', 'doiop.com', 'short.ie', 'kl.am', 'wp.me',
+            'rubyurl.com', 'om.ly', 'to.ly', 'bit.do', 't.co', 'lnkd.in', 'db.tt', 'qr.ae', 'adf.ly',
+            'goo.gl', 'bitly.com', 'cur.lv', 'tinyurl.com', 'ow.ly', 'bit.ly', 'ity.im', 'q.gs', 'is.gd',
+            'po.st', 'bc.vc', 'twitthis.com', 'u.to', 'j.mp', 'buzurl.com', 'cutt.us', 'u.bb', 'yourls.org',
+            'x.co', 'prettylinkpro.com', 'scrnch.me', 'filoops.info', 'vzturl.com', 'qr.net', '1url.com',
+            'tweez.me', 'v.gd', 'tr.im', 'link.zip.net'
         ]
         return -1 if any(domain in url for domain in shortening_domains) else 1
 
-    """4. Symbol@: {-1,1}"""
+    '''4. Symbol@: {-1,1}'''
     def symbol_at(self, url):
         parsed_url = urlparse(url)
         return -1 if "@" in parsed_url else 1
 
-    """5. Redirecting//: {-1, 1}"""
+    '''5. Redirecting//: {-1, 1}'''
     def double_slash_redirecting(self, url):
         parsed_url = urlparse(url)
         return -1 if "//" in parsed_url else 1
@@ -136,8 +74,8 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     def prefix_suffix(self, url):
         domain = urlparse(url).netloc.split("/")[0].split('?')[0].split('#')[0]
         return -1 if '-' in domain else 1
-    
-        '''7. SubDomains: {-1, 0, 1}'''
+
+    '''7. SubDomains: {-1, 0, 1}'''
     def sub_domains(self, url):
         try:
             parsed_url = urlparse(url)
@@ -159,8 +97,9 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if num_subdomains <= 1 else 1 if num_subdomains == 2 else -1
         except:
             return -1
-        
-        '''8.HTTPS: {-1, 0, 1}'''
+
+
+    '''8.HTTPS: {-1, 0, 1}'''
     def http_s(self, url, timeout=2):
         if url.startswith("https://"):
             return 1
@@ -221,7 +160,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             else:
                 # If the scheme is not HTTP or HTTPS, return -1
                 return -1
-            
+
     '''12.HTTPSDomainURL: {-1,1}'''
     def is_https_in_domain(self, url):
         return -1 if 'https' in urlparse(url).netloc else 1
@@ -243,7 +182,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return -1 if total_resources == 0 else 1 if (success / total_resources) * 100 >= 42.0 else -1
         except Exception:
             return -1
-        
+
     '''14.AnchorURL: {-1,0,1}'''
     def anchor_urls(self, url):
         try:
@@ -293,7 +232,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
 
         except Exception:
             return -1
-        
+
     '''16.ServerFormHandler: {-1, 0, 1}'''
     def server_form_handler(self, url):
         try:
@@ -330,7 +269,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if response_text == whois_response else -1
         except Exception:
             return -1
-        
+
     '''19.WebsiteForwarding: {0, 1}'''
     def website_forwarding(self, url):
         try:
@@ -357,7 +296,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if re.findall("<script>.+onmouseover.+</script>", html_content) or re.findall("<style>.+statusbar.+</style>", html_content) or re.findall("<a .+onmouseover.+title=.+>", html_content) or re.findall("addEventListener\('mouseover', .+setStatusBar", html_content) else -1
         except Exception:
             return -1
-        
+
     '''21.DisableRightClick: {-1, 1}'''
     def disable_right_click(self, url):
         try:
@@ -396,6 +335,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             print("An error occurred:", e)
             return -1  # Error occurred, unable to determine
 
+
     '''24.AgeofDomain: {-1, 1}'''
     def age_of_domain(self, url):
         try:
@@ -415,6 +355,17 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if answers else -1
         except Exception:
             return -1
+
+    '''26.WebsiteTraffic: {-1, 0, 1}'''
+    def load_alexa_data(self, file_path):
+        try:
+            with open(file_path) as f:
+                return list(csv.reader(f))
+        except FileNotFoundError:
+            print(f"Error: File '{file_path}' not found.")
+        except Exception as e:
+            print(f"Error loading Alexa data: {e}")
+        return []  # Return an empty list if there's an error
 
     def website_traffic(self, url, alexa_data=None):
         if alexa_data is None:
@@ -440,7 +391,8 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if rank is not None and rank < 100000 else 0 if rank is not None else -1
         except Exception:
             return -1
-        
+
+
     '''28.GoogleIndex: {-1, 1}'''
     def google_index(self, url):
         try:
@@ -448,7 +400,6 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             return 1 if url in search_results else -1
         except Exception:
             return -1
-
 
     '''29.LinksPointingToPage: {-1, 0, 1}'''
     def links_pointing_to_page(self, url):
