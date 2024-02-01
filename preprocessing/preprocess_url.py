@@ -16,4 +16,17 @@ class URLPreprocessor(BaseEstimator, TransformerMixin):
         return [self.preprocess_url(url) for url in X]
 
     def preprocess_url(self, url):
+        # Decode URL encoding
+        url = unquote(url)
         
+        # Remove http, https, www
+        url = url.replace('http://', '').replace('https://', '').replace('www.', '')
+
+        # Normalize Unicode characters to their ASCII equivalent
+        url = unicodedata.normalize('NFKD', url).encode('ascii', 'ignore').decode('utf-8', 'ignore')
+
+        # Convert all letters to lowercase
+        url = url.lower()
+
+        # Remove leading and trailing white spaces
+        url = url.strip()
