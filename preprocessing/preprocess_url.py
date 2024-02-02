@@ -30,3 +30,9 @@ class URLPreprocessor(BaseEstimator, TransformerMixin):
 
         # Remove leading and trailing white spaces
         url = url.strip()
+
+        # Replace IP addresses with a placeholder like "ipaddress"
+        url = re.sub(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', 'ipaddress', url)
+
+        # Split URL based on delimiters
+        tokens = re.split(r'[!$&\'()*+,;=:@._~:/?#\\[\]-]+', url)
