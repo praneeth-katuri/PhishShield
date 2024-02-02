@@ -36,3 +36,21 @@ class URLPreprocessor(BaseEstimator, TransformerMixin):
 
         # Split URL based on delimiters
         tokens = re.split(r'[!$&\'()*+,;=:@._~:/?#\\[\]-]+', url)
+
+        # Remove stopwords
+        stop_words = set(stopwords.words('english'))
+        tokens = [token for token in tokens if token not in stop_words]
+
+        # Lemmatization
+        lemmatizer = WordNetLemmatizer()
+
+        # Filter tokens to remove pure numeric tokens and single character tokens
+        tokens = [lemmatizer.lemmatize(token) for token in tokens if len(token) > 1 and not token.isdigit()]
+
+        # Remove empty tokens
+        tokens = [token for token in tokens if token]
+
+        # Join tokens into one string
+        preprocessed_url = ' '.join(tokens)
+
+        return preprocessed_url
