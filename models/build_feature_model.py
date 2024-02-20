@@ -68,7 +68,7 @@ def upsample_data(X_train, y_train):
 
 def main():
     # Load data
-    X, y = load_data("datafiles/dataset_for_feature_model.csv")
+    X, y = load_data("datasets/dataset_for_feature_model.csv")
 
     # Split data
     X_train, X_test, y_train, y_test = split_data(X, y)
@@ -109,7 +109,7 @@ def main():
             ('feature_extraction', FeatureExtractor()),
             ('model', best_model)
         ])
-        joblib.dump(ml_pipeline, 'models/feature_model.joblib')
+        joblib.dump(ml_pipeline, 'feature_model.joblib')
         print("Best performing model saved as 'feature_model.joblib'.")
         print(f"The best performing model is: {best_model_name}, with f1-score: {best_f1_score}")
 
