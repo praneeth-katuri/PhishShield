@@ -382,7 +382,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     '''27.PageRank: {-1, 1}'''
     def page_rank(self, url, alexa_data=None):
         if alexa_data is None:
-            alexa_data = self.load_alexa_data('datafiles/top-1m.csv')
+            alexa_data = self.load_alexa_data('datasets/top-1m.csv')
         try:
             domain = urlparse(url).netloc
             if domain.startswith('www.'):
