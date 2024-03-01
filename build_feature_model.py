@@ -53,7 +53,7 @@ def store_results(ML_Model, accuracy_train, accuracy_test, f1_score_train, f1_sc
 # Main function
 def main():
     # Load data
-    X, y = load_data("datafiles/phishing.csv")
+    X, y = load_data("datafiles/dataset_for_feature_model.csv")
 
     # Split data
     X_train, X_test, y_train, y_test = split_data(X, y)
