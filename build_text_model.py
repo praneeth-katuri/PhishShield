@@ -96,7 +96,7 @@ def main():
     X_train, X_test, y_train, y_test = split_data(X, y)
 
     # Upsample minority class
-    X_train, y_train = upsample_data(X_train, y_train)
+    #X_train, y_train = upsample_data(X_train, y_train)
 
     # Define pipeline for each classifier
     classifiers = {
@@ -105,35 +105,35 @@ def main():
             ('vectorizer', CountVectorizer(tokenizer=None,
              stop_words=None, lowercase=False, ngram_range=(1, 2))),
             ('classifier', GridSearchCV(LogisticRegression(),
-             param_grids["Logistic Regression"], cv=5, scoring=scoring))
+             param_grids["Logistic Regression"], cv=5))
         ]),
         "LinearSVC": Pipeline([
             ('preprocessor', URLPreprocessor()),
             ('vectorizer', CountVectorizer(tokenizer=None,
              stop_words=None, lowercase=False, ngram_range=(1, 2))),
             ('classifier', GridSearchCV(LinearSVC(),
-             param_grids["LinearSVC"], cv=5, scoring=scoring))
+             param_grids["LinearSVC"], cv=5))
         ]),
         "Random Forest": Pipeline([
             ('preprocessor', URLPreprocessor()),
             ('vectorizer', CountVectorizer(tokenizer=None,
              stop_words=None, lowercase=False, ngram_range=(1, 2))),
             ('classifier', GridSearchCV(RandomForestClassifier(),
-             param_grids["Random Forest"], cv=5, scoring=scoring))
+             param_grids["Random Forest"], cv=5))
         ]),
         "K-Nearest Neighbors": Pipeline([
             ('preprocessor', URLPreprocessor()),
             ('vectorizer', CountVectorizer(tokenizer=None,
              stop_words=None, lowercase=False, ngram_range=(1, 2))),
             ('classifier', GridSearchCV(KNeighborsClassifier(),
-             param_grids["K-Nearest Neighbors"], cv=5, scoring=scoring))
+             param_grids["K-Nearest Neighbors"], cv=5))
         ]),
         "Multinomial Naive Bayes": Pipeline([
             ('preprocessor', URLPreprocessor()),
             ('vectorizer', CountVectorizer(tokenizer=None,
              stop_words=None, lowercase=False, ngram_range=(1, 2))),
             ('classifier', GridSearchCV(MultinomialNB(),
-             param_grids["Multinomial Naive Bayes"], cv=5, scoring=scoring))
+             param_grids["Multinomial Naive Bayes"], cv=5))
         ])
     }
 

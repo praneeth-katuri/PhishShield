@@ -1,13 +1,14 @@
-import pickle
+import joblib
 import pandas as pd
 from sklearn import metrics
 from sklearn.metrics import f1_score
 from sklearn.pipeline import Pipeline
+from lightgbm import LGBMClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier
 from preprocessing.url_feature_extraction import FeatureExtractor
 from imblearn.over_sampling import SMOTE
 import warnings
@@ -33,10 +34,10 @@ def split_data(X, y, test_size=0.2, random_state=42):
 
 # Define parameter grids for GridSearchCV
 param_grids = {
-    "Logistic Regression": {'solver': ['liblinear', 'lbfgs'], 'C': [0.01, 0.1, 1.0]},
-    "Support Vector Machine": {'C': [0.001, 0.01, 0.1, 1, 10.0], 'gamma': [0.1, 0.01, 0.001], 'kernel': ['linear', 'rbf']},
-    "Random Forest": {'n_estimators': [10, 50, 100, 200], 'max_depth': [3, 5, 7, 10]},
-    "Gradient Boosting": {'learning_rate': [0.01, 0.001, 0.1], 'n_estimators': [50, 100, 200], 'max_depth': [3, 5, 7]}
+    "Logistic Regression": {'solver': ['liblinear', 'saga'], 'C': [1, 10, 100], 'penalty': ['l1','l2']},
+    "Support Vector Machine": {'C': [1, 10, 100], 'gamma': ['scale', 'auto', 0.1], 'kernel': ['linear', 'rbf', 'poly']},
+    "Random Forest": {'n_estimators': [200, 400, 600], 'max_depth': [None, 20, 50], 'min_samples_split': [2, 5, 10], 'min_samples_leaf': [1, 2, 4]},
+    "LightGBM": {'learning_rate': [0.05, 0.1], 'num_leaves': [20, 30], 'max_depth': [5, 7], 'min_child_samples': [10, 20], 'subsample': [0.8, 0.9], 'colsample_bytree': [0.8, 0.9], 'reg_alpha': [0.0, 0.1], 'reg_lambda': [0.0, 0.1]}
 }
 
 # Function to train and evaluate a model
@@ -90,10 +91,10 @@ def main():
 
     # Initialize models with GridSearchCV
     models = {
-        "Logistic Regression": GridSearchCV(LogisticRegression(), param_grids["Logistic Regression"], cv=5),
-        "Support Vector Machine": GridSearchCV(SVC(), param_grids["Support Vector Machine"], cv=5),
-        "Random Forest": GridSearchCV(RandomForestClassifier(), param_grids["Random Forest"], cv=5, n_jobs=-1),
-        "Gradient Boosting": GridSearchCV(GradientBoostingClassifier(), param_grids["Gradient Boosting"], cv=5)
+        "Logistic Regression": GridSearchCV(LogisticRegression(), param_grids["Logistic Regression"], cv=5, scoring='f1'),
+        "Support Vector Machine": GridSearchCV(SVC(), param_grids["Support Vector Machine"], cv=5, scoring='f1'),
+        "Random Forest": GridSearchCV(RandomForestClassifier(), param_grids["Random Forest"], cv=5, n_jobs=-1, scoring='f1'),
+        "LightGBM": GridSearchCV(LGBMClassifier(), param_grids["LightGBM"], cv=5, scoring='f1')
     }
 
     best_model = None
@@ -121,9 +122,8 @@ def main():
             ('feature_extraction', FeatureExtractor()),  # Feature extraction step
             ('model', best_model)  # Machine learning model step
         ])
-        with open('models/feature_model.pkl', 'wb') as f:
-            pickle.dump(ml_pipeline, f)
-        print("Best performing model saved as 'feature_model.pkl'.")
+        joblib.dump(ml_pipeline, 'models/feature_model.joblib')
+        print("Best performing model saved as 'feature_model.joblib'.")
         print(f"The best performing model is: {best_model_name}, with accuracy: {best_accuracy}")
 
     # Display results
