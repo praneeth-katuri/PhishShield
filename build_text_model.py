@@ -5,8 +5,12 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.feature_extraction.text import CountVectorizer
 from preprocessing.preprocess_url import URLPreprocessor
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import LinearSVC
 from sklearn import metrics
+from sklearn.metrics import make_scorer
 import pickle
 from imblearn.over_sampling import SMOTE
 
@@ -26,13 +30,19 @@ def load_data(file_path):
 def split_data(X, y, test_size=0.2, random_state=42):
     return train_test_split(X, y, test_size=test_size, random_state=random_state)
 
+# Define the scoring metrics you want to use
+scoring = {
+    'precision': make_scorer(metrics.precision_score),
+    'recall': make_scorer(metrics.recall_score),
+}
 
 # Define parameter grids for GridSearchCV
 param_grids = {
-    "Logistic Regression": {'C': [0.1, 1.0, 10.0]},
-    "Support Vector Machine": {'C': [0.1, 1.0, 10.0], 'gamma': [0.1, 1.0, 10.0], 'kernel': ['rbf', 'linear']},
-    "Random Forest": {'n_estimators': [100, 200, 300]},
-    "Gradient Boosting": {'n_estimators': [100, 200, 300]}
+    "Logistic Regression": {'solver': ['liblinear', 'lbfgs'], 'C': [0.01, 0.1, 1.0]},
+    "LinearSVC": {'C': [0.01, 0.1, 1.0]},
+    "Random Forest": {'n_estimators': [100, 150, 200], 'max_depth': [3, 5, 8]},
+    "K-Nearest Neighbors": {'n_neighbors': [3, 5, 7], 'metric': ['euclidean', 'cosine']},
+    "Multinomial Naive Bayes": {'alpha': [0.1, 0.5, 1.0]}
 }
 
 # Function to train and evaluate a model
@@ -95,21 +105,35 @@ def main():
             ('vectorizer', CountVectorizer(tokenizer=None,
              stop_words=None, lowercase=False, ngram_range=(1, 2))),
             ('classifier', GridSearchCV(LogisticRegression(),
-             param_grids["Logistic Regression"], cv=5, scoring='accuracy'))
+             param_grids["Logistic Regression"], cv=5, scoring=scoring))
+        ]),
+        "LinearSVC": Pipeline([
+            ('preprocessor', URLPreprocessor()),
+            ('vectorizer', CountVectorizer(tokenizer=None,
+             stop_words=None, lowercase=False, ngram_range=(1, 2))),
+            ('classifier', GridSearchCV(LinearSVC(),
+             param_grids["LinearSVC"], cv=5, scoring=scoring))
         ]),
         "Random Forest": Pipeline([
             ('preprocessor', URLPreprocessor()),
             ('vectorizer', CountVectorizer(tokenizer=None,
              stop_words=None, lowercase=False, ngram_range=(1, 2))),
             ('classifier', GridSearchCV(RandomForestClassifier(),
-             param_grids["Random Forest"], cv=5, scoring='accuracy'))
+             param_grids["Random Forest"], cv=5, scoring=scoring))
         ]),
-        "Gradient Boosting": Pipeline([
+        "K-Nearest Neighbors": Pipeline([
             ('preprocessor', URLPreprocessor()),
             ('vectorizer', CountVectorizer(tokenizer=None,
              stop_words=None, lowercase=False, ngram_range=(1, 2))),
-            ('classifier', GridSearchCV(GradientBoostingClassifier(),
-             param_grids["Gradient Boosting"], cv=5, scoring='accuracy'))
+            ('classifier', GridSearchCV(KNeighborsClassifier(),
+             param_grids["K-Nearest Neighbors"], cv=5, scoring=scoring))
+        ]),
+        "Multinomial Naive Bayes": Pipeline([
+            ('preprocessor', URLPreprocessor()),
+            ('vectorizer', CountVectorizer(tokenizer=None,
+             stop_words=None, lowercase=False, ngram_range=(1, 2))),
+            ('classifier', GridSearchCV(MultinomialNB(),
+             param_grids["Multinomial Naive Bayes"], cv=5, scoring=scoring))
         ])
     }
 
@@ -137,8 +161,7 @@ def main():
     # Save the best model
     if best_model is not None:
         save_model(best_model, 'text_model.pkl')
-        print(f"Best performing model saved as 'text_model.pkl'. Classifier: {
-              best_model_name}, Accuracy: {best_accuracy}")
+        print(f"Best performing model saved as 'text_model.pkl'. Classifier: {best_model_name}, Accuracy: {best_accuracy}")
 
     # Display results
     results_df = pd.DataFrame(results)
