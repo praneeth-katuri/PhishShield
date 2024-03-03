@@ -14,9 +14,12 @@ feature_model = joblib.load('models/feature_model.pkl')
 
 # Create a voting ensemble classifier
 voting_classifier = VotingClassifier(estimators=[
-    ('pipeline1', pipeline1),
-    ('pipeline2', pipeline2)
+    ('text_model', text_model),
+    ('feature_model', feature_model)
 ], voting='hard')
+
+X = data0['url']
+y = data0['label']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
