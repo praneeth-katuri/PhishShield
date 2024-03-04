@@ -100,7 +100,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
 
 
     '''8.HTTPS: {-1, 0, 1}'''
-    def http_s(self, url, timeout=5):
+    def http_s(self, url, timeout=2):
         if url.startswith("https://"):
             return 1
         else:
@@ -124,7 +124,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     '''10.Favicon: {-1, 1}'''
     def favicon(self, url):
         try:
-            response = requests.get(url, timeout=5)
+            response = requests.get(url, timeout=2)
             response.raise_for_status()
             soup = BeautifulSoup(response.content, 'html.parser')
             favicon_link = soup.find('link', rel='icon') or soup.find('link', rel='shortcut icon')
@@ -168,7 +168,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     '''13.RequestURL: {-1,1}'''
     def request_urls(self, url):
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=2)
             if response.status_code != 200:
                 return -1
             soup = BeautifulSoup(response.content, 'html.parser')
@@ -186,7 +186,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     '''14.AnchorURL: {-1,0,1}'''
     def anchor_urls(self, url):
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=2)
             soup = BeautifulSoup(response.content, 'html.parser')
             unsafe, i = 0, 0
             for a in soup.find_all('a', href=True):
@@ -204,7 +204,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             i, success = 0, 0
 
             # Make an HTTP request to the URL
-            response = requests.get(url)
+            response = requests.get(url, timeout=2)
             soup = BeautifulSoup(response.content, 'html.parser')
 
             for link in soup.find_all('link', href=True):
@@ -236,7 +236,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     '''16.ServerFormHandler: {-1, 0, 1}'''
     def server_form_handler(self, url):
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=2)
             soup = BeautifulSoup(response.content, 'html.parser')
             forms = soup.find_all('form', action=True)
             if len(forms) == 0:
@@ -253,7 +253,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     '''17.InfoEmail: {-1, 1}'''
     def info_email(self, url):
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=2)
             soup = BeautifulSoup(response.content, 'html.parser')
             return -1 if re.findall(r"(mail\(\)|mailto:)", str(soup)) else 1
         except Exception:
@@ -262,7 +262,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     '''18.AbnormalURL: {-1, 1}'''
     def abnormal_url(self, url):
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=2)
             response_text = response.text
             domain = urlparse(url).netloc
             whois_response = str(whois.whois(domain))
@@ -276,7 +276,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             max_redirects = 4
             redirects_count = 0
             while True:
-                response = requests.head(url, allow_redirects=True)
+                response = requests.head(url, allow_redirects=True, timeout=1)
                 if response.status_code in [301, 302]:
                     redirects_count += 1
                     if redirects_count > max_redirects:
@@ -291,7 +291,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     '''20.StatusBarCust: {-1, 1}'''
     def status_bar_cust(self, url):
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=2)
             html_content = response.text
             return 1 if re.findall("<script>.+onmouseover.+</script>", html_content) or re.findall("<style>.+statusbar.+</style>", html_content) or re.findall("<a .+onmouseover.+title=.+>", html_content) or re.findall("addEventListener\('mouseover', .+setStatusBar", html_content) else -1
         except Exception:
@@ -300,7 +300,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     '''21.DisableRightClick: {-1, 1}'''
     def disable_right_click(self, url):
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=2)
             html_content = response.text
             return 1 if re.findall(r"event\.button\s*===\s*2", html_content) else -1
         except Exception:
@@ -309,7 +309,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     '''22.UsingPopupWindow: {-1, 1}'''
     def using_popup_window(self, url):
         try:
-            response = requests.get(url, timeout=5)
+            response = requests.get(url, timeout=2)
             response.raise_for_status()
             html_content = response.text
             return 1 if re.findall(r"window\.open\(|alert\(", html_content) else -1
@@ -320,7 +320,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     def iframe_redirect(self, url):
         try:
             # Send a GET request to the URL and fetch the HTML content
-            response = requests.get(url, timeout=5)
+            response = requests.get(url, timeout=2)
             response.raise_for_status()  # Raise an exception for non-200 status codes
 
             # Extract the HTML content from the response
@@ -404,7 +404,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     '''29.LinksPointingToPage: {-1, 0, 1}'''
     def links_pointing_to_page(self, url):
         try:
-            response = requests.get(url, timeout=10)
+            response = requests.get(url, timeout=2)
             if response.status_code == 200:
                 number_of_links = len(re.findall(r"<a href=", response.text))
                 return -1 if number_of_links == 0 else 1 if number_of_links > 3 else 0
@@ -416,7 +416,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
     '''30.StatsReport: {-1,1}'''
     def stats_report(self, url):
         try:
-            response = requests.get('https://openphish.com/feed.txt')
+            response = requests.get('https://openphish.com/feed.txt', timeout=2)
             response.raise_for_status()
             for line in response.text.split('\n'):
                 line = line.strip()
