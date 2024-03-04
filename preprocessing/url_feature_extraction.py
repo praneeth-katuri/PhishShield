@@ -19,9 +19,12 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
         return self
     
     def transform(self, X):
-        features = self.process_url(X)
-        print(features)
-        return pd.DataFrame([features])
+        if not isinstance(X, list):
+            X = [X]
+
+
+        features_list = [self.process_url(url) for url in X]
+        return pd.DataFrame(features_list)
     
     '''1. UsingIP : {-1,1}'''
     def using_ip(self, url):

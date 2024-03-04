@@ -22,6 +22,9 @@ class URLPreprocessor(BaseEstimator, TransformerMixin):
         # Remove http, https, www
         url = url.replace('http://', '').replace('https://', '').replace('www.', '')
 
+        # Normalize Unicode characters to their ASCII equivalent
+        url = unicodedata.normalize('NFKD', url).encode('ascii', 'ignore').decode('utf-8', 'ignore')
+
         # Convert all letters to lowercase
         url = url.lower()
 
