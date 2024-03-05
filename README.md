@@ -24,23 +24,17 @@ The dataset used to train the URL-based model.
 
 The dataset used to train the text-based model.
 
-## Features
-
-The features used by the machine learning models include:
-
-- URL length
-- Presence of HTTPS
-- Domain age
-- IP address reputation
-- Presence of suspicious keywords
-- Website popularity
-- ...
-
-These features are carefully selected to capture different aspects of a website that may indicate whether it is a phishing site or not.
-
 ## Machine Learning Models
 
-The repository includes machine learning models trained using various algorithms, including logistic regression, support vector classifier (SVC), random forest, LightGBM, K-nearest neighbors (KNN), and multinomial naive Bayes. These models are trained using scikit-learn and LightGBM libraries.
+The repository includes two machine learning models:
+
+### URL-based Model:
+
+This model is built using Python and popular libraries such as scikit-learn. It employs a supervised learning approach, where the model learns from labeled examples to make predictions based on the 29 URL features.
+
+### Text-based Model:
+
+This model also uses Python and machine learning libraries to analyze the text content of URLs. It extracts relevant features from the text and trains a separate classifier to detect phishing websites.
 
 The training process involves utilizing scikit-learn pipelines, which consist of custom transformers for preprocessing data before feeding it to the models. Grid search with cross-validation is used to tune hyperparameters and optimize model performance.
 
@@ -54,14 +48,9 @@ Both machine learning models are deployed using Flask, a lightweight web framewo
 
 The web interface is built using HTML, CSS, and Bootstrap to provide a user-friendly experience. Users can input a URL and receive predictions on whether it is a phishing website or not.
 <div align="center">
-    <img src="screenshots/enter_url_1.png" alt="Image 1" width="600" height="300" style="margin-right: 20px;">
-    <img src="screenshots/enter_url_2.png" alt="Image 2" width="600" height="300" style="margin-right: 20px;">
+    <img src="screenshots/phishing.gif" alt="Image 1" width="600" height="300" style="margin-right: 20px;">
+    <img src="screenshots/legitimate.gif" alt="Image 2" width="600" height="300" style="margin-right: 20px;">
 </div>
-<div align = "center">
-    <img src="screenshots/result_url_1.png" alt="Image 3" width="400" height="400" style="margin-right: 20px;">
-    <img src="screenshots/result_url_2.png" alt="Image 4" width="400" height="400" style="margin-right: 20px;">
-</div>
-
 
 ## Usage
 
@@ -70,7 +59,7 @@ To use the PhishShield, follow these steps:
 1. Clone the repository:
 
    ```
-   git clone https://github.com/yourusername/phishing-detection.git
+   git clone https://github.com/praneeth-katuri/PhishShield.git
    ```
 
 2. Install the required dependencies:
