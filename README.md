@@ -3,7 +3,6 @@
 ## Table of Contents
 
 - [Dataset](#dataset)
-- [Features](#features)
 - [Machine Learning Models](#machine-learning-models)
 - [Flask Deployment with Caching](#flask-deployment-with-caching)
 - [Webpage Interface](#webpage-interface)
