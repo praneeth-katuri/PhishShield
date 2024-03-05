@@ -54,10 +54,12 @@ Both machine learning models are deployed using Flask, a lightweight web framewo
 
 The web interface is built using HTML, CSS, and Bootstrap to provide a user-friendly experience. Users can input a URL and receive predictions on whether it is a phishing website or not.
 <div align="center">
-    <img src="screenshots/enter_url_1.png.png" alt="Image 1" width="200" style="margin-right: 20px;">
-    <img src="screenshots/enter_url_2.png" alt="Image 2" width="200" style="margin-right: 20px;">
-    <img src="screenshots/result_url_1.png" alt="Image 3" width="200" style="margin-right: 20px;">
-    <img src="screenshots/result_url_2.png" alt="Image 4" width="200">
+    <img src="screenshots/enter_url_1.png.png" alt="Image 1" width="400" height="400" style="margin-right: 20px;">
+    <img src="screenshots/enter_url_2.png" alt="Image 2" width="400" height="400" style="margin-right: 20px;">
+</div>
+<div align = "center">
+    <img src="screenshots/result_url_1.png" alt="Image 3" width="400" height="400" style="margin-right: 20px;">
+    <img src="screenshots/result_url_2.png" alt="Image 4" width="400" height="400" style="margin-right: 20px;">
 </div>
 
 
