@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-- [Dataset](#dataset)
+- [Datasets](#dataset)
 - [Machine Learning Models](#machine-learning-models)
 - [Flask Deployment with Caching](#flask-deployment-with-caching)
 - [Webpage Interface](#webpage-interface)
@@ -11,7 +11,7 @@
 - [Contributing](#contributing)
 - [License](#license)
 
-## Dataset
+## Datasets
 
 The project utilizes two separate datasets, each tailored for training a specific machine learning model.
 
