@@ -15,19 +15,19 @@
 
 The project utilizes two separate datasets, each tailored for training a specific machine learning model.
 
-### Dataset for URL-based Model
+### Dataset for Feature-based Model
 
-The dataset used to train the URL-based model.
+- [The dataset used to train the feature-based model](https://www.kaggle.com/datasets/eswarchandt/phishing-website-detector)
 
 ### Dataset for Text-based Model
 
-The dataset used to train the text-based model.
+- [The dataset used to train the text-based model](https://www.kaggle.com/datasets/harisudhan411/phishing-and-legitimate-urls)
 
 ## Machine Learning Models
 
 The repository includes two machine learning models:
 
-### URL-based Model:
+### Feature-based Model:
 
 This model is built using Python and popular libraries such as scikit-learn. It employs a supervised learning approach, where the model learns from labeled examples to make predictions based on the 29 URL features.
 
@@ -78,6 +78,9 @@ To use the PhishShield, follow these steps:
 ## Results
 
 The performance of the phishing detection models is evaluated using metrics such as accuracy, precision, recall, and F1-score. The results demonstrate the effectiveness of each model in distinguishing between phishing and legitimate websites.
+<div align="center">
+    <img src="screenshots/result.png" alt="Image 1" width="600" height="150" style="margin-right: 20px;">
+</div>
 
 ## Contributing
 
