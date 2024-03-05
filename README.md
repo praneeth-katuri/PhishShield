@@ -79,7 +79,7 @@ To use the PhishShield, follow these steps:
 
 The performance of the phishing detection models is evaluated using metrics such as accuracy, precision, recall, and F1-score. The results demonstrate the effectiveness of each model in distinguishing between phishing and legitimate websites.
 <div align="center">
-    <img src="screenshots/result.png" alt="Image 1" width="800" height="150" style="margin-right: 20px;">
+    <img src="screenshots/result.png" alt="Image 1" width="1000" height="150" style="margin-right: 20px;">
 </div>
 
 ## Contributing
