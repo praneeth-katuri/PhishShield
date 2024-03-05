@@ -1,4 +1,4 @@
-# Phishing Detection using Machine Learning
+# PhishShield
 
 ## Table of Contents
 
