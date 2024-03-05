@@ -53,16 +53,17 @@ Both machine learning models are deployed using Flask, a lightweight web framewo
 ## Webpage Interface
 
 The web interface is built using HTML, CSS, and Bootstrap to provide a user-friendly experience. Users can input a URL and receive predictions on whether it is a phishing website or not.
+<div align="center">
+    <img src="screenshots/enter_url_1.png.png" alt="Image 1" width="200" style="margin-right: 20px;">
+    <img src="screenshots/enter_url_2.png" alt="Image 2" width="200" style="margin-right: 20px;">
+    <img src="screenshots/result_url_1.png" alt="Image 3" width="200" style="margin-right: 20px;">
+    <img src="screenshots/result_url_2.png" alt="Image 4" width="200">
+</div>
 
-![Input](https://i.imgur.com/example_input.png)
-*Input webpage interface*
-
-![Output](https://i.imgur.com/example_output.png)
-*Output webpage interface*
 
 ## Usage
 
-To use the phishing detection models, follow these steps:
+To use the PhishShield, follow these steps:
 
 1. Clone the repository:
 
@@ -76,9 +77,13 @@ To use the phishing detection models, follow these steps:
    pip install -r requirements.txt
    ```
 
-3. Run the provided scripts to train the models, perform grid search, and deploy the Flask app.
+3. To start the Flask application, run the following command in your terminal:
 
-4. Use the Flask app to make predictions on new URLs.
+   ```
+   python app.py
+   ```
+
+4. To access the webpage interface, open `http://127.0.0.1:5000` in your web browser.
 
 ## Results
 
