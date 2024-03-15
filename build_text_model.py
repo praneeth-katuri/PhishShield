@@ -97,7 +97,7 @@ def main():
     }
 
     best_model = None
-    best_accuracy = 0
+    best_f1_score = 0
     best_model_name = ""
 
     # Train and evaluate models
@@ -105,8 +105,8 @@ def main():
     for name, model in classifiers.items():
         acc_train, acc_test, f1_train, f1_test, recall_train, recall_test, precision_train, precision_test = train_evaluate_model(
             model, X_train, X_test, y_train, y_test)
-        if acc_test > best_accuracy:
-            best_accuracy = acc_test
+        if f1_test > best_f1_score:
+            best_f1_score = f1_test
             best_model = model
             best_model_name = name
         results.append(store_results(name, acc_train, acc_test, f1_train, f1_test, recall_train, recall_test, precision_train, precision_test))
@@ -120,7 +120,7 @@ def main():
     # Save the best model
     if best_model is not None:
         joblib.dump(best_model, 'models/text_model.joblib')
-        print(f"Best performing model saved as 'text_model.joblib'. Classifier: {best_model_name}, Accuracy: {best_accuracy}")
+        print(f"Best performing model saved as 'text_model.joblib'. Classifier: {best_model_name}, with f1-Score: {best_f1_score}")
 
     # Display results
     results_df = pd.DataFrame(results)
