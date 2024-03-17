@@ -4,3 +4,4 @@ phishing/
 PhishShield/
 .google-cookie
 .cache/
+.env

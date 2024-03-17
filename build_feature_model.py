@@ -15,8 +15,6 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Function to load data
-
-
 def load_data(file_path):
     data = pd.read_csv(file_path)
     data = data.sample(frac=1).reset_index(drop=True)
@@ -26,8 +24,6 @@ def load_data(file_path):
     return X, y
 
 # Function to split data
-
-
 def split_data(X, y, test_size=0.2, random_state=42):
     return train_test_split(X, y, test_size=test_size, random_state=random_state)
 
@@ -41,10 +37,12 @@ param_grids = {
 }
 
 # Function to train and evaluate a model
-
-
-def train_evaluate_model(model, X_train, X_test, y_train, y_test):
+def train_evaluate_model(name, model, X_train, X_test, y_train, y_test):
     model.fit(X_train, y_train)
+    best_classifier = model.best_estimator_
+    print(f"RandomizedSearchCV results for {name}:")
+    print("Best parameters found:")
+    print(best_classifier.get_params())
     y_train_pred = model.predict(X_train)
     y_test_pred = model.predict(X_test)
     acc_train = metrics.accuracy_score(y_train, y_train_pred)
@@ -58,26 +56,17 @@ def train_evaluate_model(model, X_train, X_test, y_train, y_test):
     return acc_train, acc_test, f1_train, f1_test, recall_train, recall_test, precision_train, precision_test
 
 # Function to store model results
-
-
 def store_results(ML_Model, accuracy_train, accuracy_test, f1_score_train, f1_score_test, recall_train, recall_test, precision_train, precision_test):
     results = {"ML Model": ML_Model, "Accuracy (Train)": accuracy_train, "Accuracy (Test)": accuracy_test, "F1 Score (Train)": f1_score_train, "F1 Score (Test)": f1_score_test, "Recall (Train)": recall_train, "Recall (Test)": recall_test, "Precision (Train)": precision_train, "Precision (Test)": precision_test}
     return results
 
 # Function to perform upsampling of minority class
-
-
 def upsample_data(X_train, y_train):
-    # Initialize SMOTE
+    
     smote = SMOTE(random_state=42)
-
-    # Resample the minority class
     X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
 
     return X_train_resampled, y_train_resampled
-
-# Main function
-
 
 def main():
     # Load data
@@ -104,7 +93,7 @@ def main():
     # Train and evaluate models
     results = []
     for name, model in models.items():
-        acc_train, acc_test, f1_train, f1_test, recall_train, recall_test, precision_train, precision_test = train_evaluate_model(model, X_train, X_test, y_train, y_test)
+        acc_train, acc_test, f1_train, f1_test, recall_train, recall_test, precision_train, precision_test = train_evaluate_model(name, model, X_train, X_test, y_train, y_test)
         if f1_test > best_f1_score:
             best_f1_score = f1_test
             best_model = model
@@ -119,8 +108,8 @@ def main():
     # Save the best performing model
     if best_model is not None:
         ml_pipeline = Pipeline([
-            ('feature_extraction', FeatureExtractor()),  # Feature extraction step
-            ('model', best_model)  # Machine learning model step
+            ('feature_extraction', FeatureExtractor()),
+            ('model', best_model)
         ])
         joblib.dump(ml_pipeline, 'models/feature_model.joblib')
         print("Best performing model saved as 'feature_model.joblib'.")

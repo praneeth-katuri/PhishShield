@@ -6,18 +6,10 @@
     <title>reCAPTCHA Verification</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    </style>
-    <script>
-        function submitForm() {
-            document.getElementById("captchaForm").submit();
-        }
-
-        function captchaCallback() {
-            submitForm();
-        }
-    </script>
 </head>
+
 <body>
     <div class="center">
     {% if error %}

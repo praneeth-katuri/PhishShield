@@ -4,6 +4,10 @@ import os
 from flask import Flask, render_template, request, make_response, redirect
 from flask_caching import Cache
 from flask_wtf.csrf import CSRFProtect
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = 'e05ffb424fdc73e5d591ce023a72b88e'
@@ -18,8 +22,8 @@ text_model = joblib.load("models/text_model.joblib")
 feature_model = joblib.load("models/feature_model.joblib")
 
 # Configure reCAPTCHA keys
-RECAPTCHA_SITE_KEY = '6Lc72ZopAAAAAFfq3Rn3xoJj_dHBfejI7CNXzoBO'
-RECAPTCHA_SECRET_KEY = '6Lc72ZopAAAAANE7ep2VVkALwBBcIM1nMXN6euDA'
+RECAPTCHA_SITE_KEY = os.getenv("RECAPTCHA_SITE_KEY")
+RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY")
 
 @app.route('/verify_recaptcha', methods=['GET', 'POST'])
 @csrf.exempt
@@ -117,4 +121,4 @@ def detect_phishing():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
