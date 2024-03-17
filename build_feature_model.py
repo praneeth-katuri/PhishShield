@@ -1,7 +1,6 @@
 import joblib
 import pandas as pd
 from sklearn import metrics
-from sklearn.metrics import f1_score
 from sklearn.pipeline import Pipeline
 from lightgbm import LGBMClassifier
 from sklearn.model_selection import train_test_split
