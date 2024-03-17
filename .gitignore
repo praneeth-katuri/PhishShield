@@ -5,3 +5,4 @@ PhishShield/
 .google-cookie
 .cache/
 .env
+models/
