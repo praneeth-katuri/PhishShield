@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'e05ffb424fdc73e5d591ce023a72b88e'
+app.secret_key = os.getenv("SECRET_KEY")
 csrf = CSRFProtect(app)
 
 # Configure Flask-Caching to use on-disk caching

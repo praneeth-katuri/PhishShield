@@ -5,11 +5,11 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.feature_extraction.text import CountVectorizer
 from preprocessing.preprocess_url import URLPreprocessor
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.svm import LinearSVC
 from sklearn import metrics
 import joblib
+import warnings
+warnings.filterwarnings('ignore')
 
 # Load the dataset
 def load_data(file_path):
@@ -26,8 +26,6 @@ def split_data(X, y, test_size=0.2, random_state=42):
 # Define parameter grids for GridSearchCV
 param_grids = {
     "Logistic Regression": {'solver': ['liblinear'], 'penalty': ['l1', 'l2'], 'C': [0.01, 0.1, 1.0, 10, 20]},
-    "LinearSVC": {'C': [0.01, 0.1, 1.0, 10, 20], 'penalty': ['l2'], 'loss': ['hinge', 'squared_hinge']},
-    "Random Forest": {'n_estimators': [50, 100], 'max_depth': [10, 20], 'min_samples_split': [2, 5], 'n_jobs': [-1]},
     "Multinomial Naive Bayes": {'alpha': [0.1, 1.0, 10]}
 }
 
@@ -35,7 +33,7 @@ param_grids = {
 def train_evaluate_model(name, pipeline, X_train, X_test, y_train, y_test):
     pipeline.fit(X_train, y_train)
     best_classifier = pipeline.named_steps['classifier'].best_estimator_
-    print(f"RandomizedSearchCV results for {name}:")
+    print(f"GridSearchCV results for {name}:")
     print("Best parameters found:")
     print(best_classifier.get_params())
     y_train_pred = pipeline.predict(X_train)
@@ -69,20 +67,10 @@ def main():
             ('vectorizer', CountVectorizer(tokenizer=None, stop_words=None, lowercase=False, ngram_range=(1, 2))),
             ('classifier', GridSearchCV(LogisticRegression(), param_grids["Logistic Regression"], cv=5, scoring='f1'))
         ]),
-        "LinearSVC": Pipeline([
-            ('preprocessor', URLPreprocessor()),
-            ('vectorizer', CountVectorizer(tokenizer=None, stop_words=None, lowercase=False, ngram_range=(1, 2))),
-            ('classifier', GridSearchCV(LinearSVC(), param_grids["LinearSVC"], cv=5, scoring='f1'))
-        ]),
-        "Random Forest": Pipeline([
-            ('preprocessor', URLPreprocessor()),
-            ('vectorizer', CountVectorizer(tokenizer=None, stop_words=None, lowercase=False, ngram_range=(1, 2))),
-            ('classifier', GridSearchCV(RandomForestClassifier(), param_grids["Random Forest"], cv=5, scoring='f1'))
-        ]),
         "Multinomial Naive Bayes": Pipeline([
             ('preprocessor', URLPreprocessor()),
             ('vectorizer', CountVectorizer(tokenizer=None, stop_words=None, lowercase=False, ngram_range=(1, 2))),
-            ('classifier', GridSearchCV(MultinomialNB(), param_grids["Multinomial Naive Bayes"], cv=5, scoring='f1'))
+            ('classifier', GridSearchCV(MultinomialNB(), param_grids["Multinomial Naive Bayes"], cv=5, n_jobs=-1, scoring='f1'))
         ])
     }
 

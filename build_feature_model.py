@@ -31,7 +31,7 @@ def split_data(X, y, test_size=0.2, random_state=42):
 param_grids = {
     "Logistic Regression": {'solver': ['liblinear', 'saga'], 'C': [1, 10, 100], 'penalty': ['l1','l2']},
     "Support Vector Machine": {'C': [1, 10, 100], 'gamma': ['scale', 'auto', 0.1], 'kernel': ['linear', 'rbf', 'poly']},
-    "Random Forest": {'n_estimators': [200, 400, 600], 'max_depth': [None, 20, 50], 'min_samples_split': [2, 5, 10], 'min_samples_leaf': [1, 2, 4], 'n_jobs': [-1]},
+    "Random Forest": {'n_estimators': [200, 400, 600], 'max_depth': [None, 20, 50], 'min_samples_split': [2, 5, 10], 'min_samples_leaf': [1, 2, 4]},
     "LightGBM": {'learning_rate': [0.05, 0.1], 'num_leaves': [20, 30], 'max_depth': [5, 7], 'min_child_samples': [10, 20], 'subsample': [0.8, 0.9], 'colsample_bytree': [0.8, 0.9], 'reg_alpha': [0.0, 0.1], 'reg_lambda': [0.0, 0.1], 'verbose': [-1]}
 }
 
@@ -39,7 +39,7 @@ param_grids = {
 def train_evaluate_model(name, model, X_train, X_test, y_train, y_test):
     model.fit(X_train, y_train)
     best_classifier = model.best_estimator_
-    print(f"RandomizedSearchCV results for {name}:")
+    print(f"GridSearchCV results for {name}:")
     print("Best parameters found:")
     print(best_classifier.get_params())
     y_train_pred = model.predict(X_train)
@@ -80,8 +80,8 @@ def main():
     # Initialize models with GridSearchCV
     models = {
         "Logistic Regression": GridSearchCV(LogisticRegression(), param_grids["Logistic Regression"], cv=5, scoring='f1'),
-        "Support Vector Machine": GridSearchCV(SVC(), param_grids["Support Vector Machine"], cv=5, scoring='f1'),
-        "Random Forest": GridSearchCV(RandomForestClassifier(), param_grids["Random Forest"], cv=5, scoring='f1'),
+        "Support Vector Machine": GridSearchCV(SVC(), param_grids["Support Vector Machine"], cv=5, n_jobs=-1, scoring='f1'),
+        "Random Forest": GridSearchCV(RandomForestClassifier(), param_grids["Random Forest"], cv=5, n_jobs=-1, scoring='f1'),
         "LightGBM": GridSearchCV(LGBMClassifier(), param_grids["LightGBM"], cv=5, scoring='f1')
     }
 
