@@ -86,6 +86,12 @@ The performance of the phishing detection models is evaluated using metrics such
 
 Contributions to this project are welcome! If you have ideas for improvements or new features, feel free to open an issue or submit a pull request.
 
+## ⭐️ Star the Project
+
+If you find this project helpful or interesting, please consider giving it a star on GitHub. Your support is greatly appreciated and helps to grow the project's visibility.
+
+[![GitHub stars](https://img.shields.io/github/stars/your-username/your-repository.svg?style=social)](https://github.com/praneeth-katuri/PhishShield/stargazers)
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
