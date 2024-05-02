@@ -58,7 +58,7 @@ To use the PhishShield, follow these steps:
 1. Clone the repository:
 
    ```
-   git clone https://github.com/praneeth-katuri/PhishShield.git
+   git clone --depth=1 https://github.com/praneeth-katuri/PhishShield.git
    ```
 
 2. Install the required dependencies:
@@ -78,8 +78,17 @@ To use the PhishShield, follow these steps:
 ## Results
 
 The performance of the phishing detection models is evaluated using metrics such as accuracy, precision, recall, and F1-score. The results demonstrate the effectiveness of each model in distinguishing between phishing and legitimate websites.
+
+### Feature-based Model
+
 <div align="center">
-    <img src="screenshots/result.png" alt="Image 1" width="1000" height="150" style="margin-right: 20px;">
+    <img src="screenshots/result1.png" alt="Image 1" width="1000" height="150" style="margin-right: 20px;">
+</div>
+
+### Text-based Model
+
+<div align="center">
+    <img src="screenshots/result2.png" alt="Image 2" width="1000" height="150" style="margin-right: 20px;">
 </div>
 
 ## Contributing
