@@ -14,7 +14,6 @@ warnings.filterwarnings('ignore')
 # Load the dataset
 def load_data(file_path):
     df = pd.read_csv(file_path)
-    df = df.sample(frac=1).reset_index(drop=True)  # Shuffle the dataset
     X = df['url']
     y = df['status']
     return X, y
