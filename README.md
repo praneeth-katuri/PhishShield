@@ -67,13 +67,22 @@ To use the PhishShield, follow these steps:
    pip install -r requirements.txt
    ```
 
-3. To start the Flask application, run the following command in your terminal:
+3. Edit `.env` file and enter your [reCAPTCHA Keys](https://developers.google.com/recaptcha/intro) and `Flask Secret Key`
+
+   To generate 'Flask Secret Key' run the below code in terminal and copy the Output key obtained in `.env` file
+    
+   ```
+   python -c 'import secrets; print(secrets.token_hex(16))'
+   ```
+
+
+4. To start the Flask application, run the following command in your terminal:
 
    ```
    python app.py
    ```
 
-4. To access the webpage interface, open `http://127.0.0.1:5000` in your web browser.
+5. To access the webpage interface, open `http://127.0.0.1:5000` in your web browser.
 
 ## Results
 
@@ -82,13 +91,13 @@ The performance of the phishing detection models is evaluated using metrics such
 ### Feature-based Model
 
 <div align="center">
-    <img src="screenshots/result1.png" alt="Image 1" width="1000" height="300" style="margin-right: 20px;">
+    <img src="screenshots/result1.png" alt="Image 1" width="1000" height="150" style="margin-right: 20px;">
 </div>
 
 ### Text-based Model
 
 <div align="center">
-    <img src="screenshots/result2.png" alt="Image 2" width="850" height="350" style="margin-right: 20px;">
+    <img src="screenshots/result2.png" alt="Image 2" width="1000" height="150" style="margin-right: 20px;">
 </div>
 
 ## Contributing
