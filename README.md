@@ -69,7 +69,7 @@ To use the PhishShield, follow these steps:
 
 3. Edit `.env` file and enter your [reCAPTCHA Keys](https://developers.google.com/recaptcha/intro) and `Flask Secret Key`
 
-   To generate 'Flask Secret Key' run the below code in terminal and copy the Output key obtained in `.env` file
+   To generate `Flask Secret Key` run the below code in terminal and copy the Output key obtained in `.env` file
     
    ```
    python -c 'import secrets; print(secrets.token_hex(16))'
