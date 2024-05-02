@@ -16,7 +16,6 @@ warnings.filterwarnings('ignore')
 # Function to load data
 def load_data(file_path):
     data = pd.read_csv(file_path)
-    data = data.sample(frac=1).reset_index(drop=True)
     data = data.drop(['Index'], axis=1)
     X = data.drop(["class"], axis=1)
     y = data["class"]
