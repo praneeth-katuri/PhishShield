@@ -91,13 +91,13 @@ The performance of the phishing detection models is evaluated using metrics such
 ### Feature-based Model
 
 <div align="center">
-    <img src="screenshots/result1.png" alt="Image 1" width="1000" height="150" style="margin-right: 20px;">
+    <img src="screenshots/result1.png" alt="Image 1" width="900" height="350" style="margin-right: 20px;">
 </div>
 
 ### Text-based Model
 
 <div align="center">
-    <img src="screenshots/result2.png" alt="Image 2" width="1000" height="150" style="margin-right: 20px;">
+    <img src="screenshots/result2.png" alt="Image 2" width="800" height="200" style="margin-right: 20px;">
 </div>
 
 ## Contributing
