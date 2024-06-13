@@ -53,23 +53,12 @@ def store_results(ML_Model, accuracy_train, accuracy_test, f1_score_train, f1_sc
     results = {"ML Model": ML_Model, "Accuracy (Train)": accuracy_train, "Accuracy (Test)": accuracy_test, "F1 Score (Train)": f1_score_train, "F1 Score (Test)": f1_score_test, "Recall (Train)": recall_train, "Recall (Test)": recall_test, "Precision (Train)": precision_train, "Precision (Test)": precision_test}
     return results
 
-# Function to perform upsampling of minority class
-def undersample_data(X_train, y_train):
-    
-    undersample = RandomUnderSampler(sampling_strategy='auto', random_state=42)
-    X_balanced, y_balanced = undersample.fit_resample(X_train, y_train)
-
-    return X_balanced, y_balanced
-
 def main():
     # Load data
     X, y = load_data('datafiles/dataset_for_text_model.csv')
 
     # Split data
     X_train, X_test, y_train, y_test = split_data(X, y)
-
-    # Balancing Class Distribution
-    X_train, y_train = undersample_data(X_train, y_train)
 
     # Define pipeline for each classifier
     classifiers = {

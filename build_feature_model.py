@@ -79,7 +79,7 @@ def main():
     # Initialize models with GridSearchCV
     models = {
         "Logistic Regression": GridSearchCV(LogisticRegression(), param_grids["Logistic Regression"], cv=5, scoring='f1'),
-        "Support Vector Machine": GridSearchCV(SVC(), param_grids["Support Vector Machine"], cv=5, n_jobs=-1, scoring='f1'),
+        #"Support Vector Machine": GridSearchCV(SVC(), param_grids["Support Vector Machine"], cv=5, n_jobs=-1, scoring='f1'),
         "Random Forest": GridSearchCV(RandomForestClassifier(), param_grids["Random Forest"], cv=5, n_jobs=-1, scoring='f1'),
         "LightGBM": GridSearchCV(LGBMClassifier(), param_grids["LightGBM"], cv=5, scoring='f1')
     }
