@@ -62,12 +62,18 @@ To use the PhishShield, follow these steps:
    ```
 
 2. Install the required dependencies:
+   
+   Python Version: `3.12.3`
 
    ```
    pip install -r requirements.txt
    ```
+3. Run the NLTK setup script:
 
-3. Edit `.env` file and enter your [reCAPTCHA Keys](https://developers.google.com/recaptcha/intro) and `Flask Secret Key`
+   ```
+   python setup_nltk.py
+   ```
+4. Edit `.env` file and enter your [reCAPTCHA Keys](https://developers.google.com/recaptcha/intro) and `Flask Secret Key`
 
    To generate `Flask Secret Key` run the below code in terminal and copy the Output key obtained in `.env` file
     
@@ -76,13 +82,13 @@ To use the PhishShield, follow these steps:
    ```
 
 
-4. To start the Flask application, run the following command in your terminal:
+5. To start the Flask application, run the following command in your terminal:
 
    ```
    python app.py
    ```
 
-5. To access the webpage interface, open `http://127.0.0.1:5000` in your web browser.
+6. To access the webpage interface, open `http://127.0.0.1:5000` in your web browser.
 
 ## Results
 
