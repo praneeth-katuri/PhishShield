@@ -41,7 +41,7 @@ Each model is evaluated using metrics such as accuracy, precision, recall, and F
 
 ## Flask Deployment with Caching
 
-Both machine learning models are deployed using Flask, a lightweight web framework for Python. The Flask app exposes endpoints to make predictions using the trained models. Additionally, caching to disk is implemented to improve performance by storing results of previous predictions.
+Both machine learning models are deployed using Flask, The Flask app exposes endpoints to make predictions using the trained models. Additionally, caching to disk is implemented to improve performance by storing results of previous predictions.
 
 ## Webpage Interface
 
