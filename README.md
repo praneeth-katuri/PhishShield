@@ -1,15 +1,6 @@
 # PhishShield
 
-## Table of Contents
-
-- [Datasets](#dataset)
-- [Machine Learning Models](#machine-learning-models)
-- [Flask Deployment with Caching](#flask-deployment-with-caching)
-- [Webpage Interface](#webpage-interface)
-- [Usage](#usage)
-- [Results](#results)
-- [Contributing](#contributing)
-- [License](#license)
+PhishShield is a phishing website detector using two ML models (feature-based and text-based).
 
 ## Datasets
 
@@ -23,29 +14,21 @@ The project utilizes two separate datasets, each tailored for training a specifi
 
 - [The dataset used to train the text-based model](https://www.kaggle.com/datasets/harisudhan411/phishing-and-legitimate-urls)
 
-## Machine Learning Models
+## Models
 
-The repository includes two machine learning models:
+- **Feature-based:** Makes prediction based on 29 URL features extracted from the URL.
 
-### Feature-based Model:
+- **Text-based:** Makes predition by analyzing URL text, words used in URL.
 
-This model is built using Python and popular libraries such as scikit-learn. It employs a supervised learning approach, where the model learns from labeled examples to make predictions based on the 29 URL features.
+- Both models use pipelines, transformers, and hyperparameter tuning with grid search.
 
-### Text-based Model:
+## Deployment
 
-This model also uses Python and machine learning libraries to analyze the text content of URLs. It extracts relevant features from the text and trains a separate classifier to detect phishing websites.
+- **Backend:** Flask app serving prediction endpoints. Disk caching for improving speed.
 
-The training process involves utilizing scikit-learn pipelines, which consist of custom transformers for preprocessing data before feeding it to the models. Grid search with cross-validation is used to tune hyperparameters and optimize model performance.
-
-Each model is evaluated using metrics such as accuracy, precision, recall, and F1-score to assess its effectiveness in distinguishing between phishing and legitimate websites.
-
-## Flask Deployment with Caching
-
-Both machine learning models are deployed using Flask, a lightweight web framework for Python. The Flask app exposes endpoints to make predictions using the trained models. Additionally, caching to disk is implemented to improve performance by storing results of previous predictions.
+- **Frontend:** Simple HTML/CSS/Bootstrap UI. Enter a URL, get prediction.
 
 ## Webpage Interface
-
-The web interface is built using HTML, CSS, and Bootstrap to provide a user-friendly experience. Users can input a URL and receive predictions on whether it is a phishing website or not.
 
 <div align="center">
     <img src="screenshots/phishing.gif" alt="Image 1" width="600" height="300" style="margin-right: 20px;">
@@ -94,7 +77,7 @@ To use the PhishShield, follow these steps:
 
 ## Results
 
-The performance of the phishing detection models is evaluated using metrics such as accuracy, precision, recall, and F1-score. The results demonstrate the effectiveness of each model in distinguishing between phishing and legitimate websites.
+**Metrics Evaluated**: accuracy, precision, recall, F1-score.
 
 ### Feature-based Model
 
